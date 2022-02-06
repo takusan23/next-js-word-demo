@@ -2,6 +2,8 @@
 
 ワードプロセッサーの見た目だけWebアプリ。
 
+![Imgur](https://imgur.com/79ztlTt.png)
+
 時間なかったので Next.js / MUI / TypeScript で書きました。
 
 # 開発環境構築
