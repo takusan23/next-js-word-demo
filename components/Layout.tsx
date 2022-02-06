@@ -1,4 +1,4 @@
-import { CssBaseline } from "@mui/material"
+import { CssBaseline, Grid } from "@mui/material"
 import Box from "@mui/material/Box"
 import RibbonUI from "./RibbonUI"
 
@@ -12,11 +12,32 @@ const Layout: React.FC<LayoutProps> = ({ children, ...props }) => {
     return (
         <Box>
             <CssBaseline />
-            <RibbonUI />
-            <Box component="main">
-                {children}
-            </Box>
-        </Box>
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="stretch"
+                sx={{ minHeight: '100vh', }}
+            >
+                {/* リボンUIの部分 */}
+                <Grid item xs="auto">
+                    <RibbonUI />
+                </Grid>
+
+                {/* 本文 */}
+                <Grid item xs sx={{ overflowY: 'scroll' }}>
+                    <Box
+                        component="main"
+                        sx={{
+                            height: '100%',
+                            maxHeight: '100%',
+                        }}
+                    >
+                        {children}
+                    </Box>
+                </Grid>
+            </Grid>
+        </Box >
     )
 }
 

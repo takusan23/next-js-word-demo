@@ -43,7 +43,7 @@ const SkeletonUIGroup = () => {
     return (
         <Grid container spacing={2}>
             {
-                [0, 1, 2].map((key) => (
+                [0, 1, 2, 3].map((key) => (
                     <Grid item key={key}>
                         <SkeletonComponent />
                     </Grid>

@@ -1,5 +1,6 @@
 import { colors, Grid } from '@mui/material'
 import type { NextPage } from 'next'
+import VerticalTextField from '../components/VerticalTextField'
 import WritingLayout from '../components/WritingLayout'
 
 /** 最初に表示される画面 */
@@ -10,17 +11,13 @@ const Home: NextPage = () => {
             direction="column"
             alignItems="center"
             sx={{
-                paddingLeft: 5,
-                paddingRight: 5,
-                paddingTop: 2,
-                paddingBottom: 2,
-                height: '80vh',
-                overflowY: 'scroll',
-                backgroundColor: colors.grey[300]
+                paddingTop: 5,
+                paddingBottom: 5,
+                backgroundColor: colors.grey[600]
             }}
         >
-            <Grid item>
-                <WritingLayout />
+            <Grid item xs>
+                <VerticalTextField />
             </Grid>
         </Grid>
     )

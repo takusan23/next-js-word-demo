@@ -10,17 +10,20 @@ const VerticalTextField = () => {
             contentEditable
             style={{
                 padding: '10px',
-                height: '80vh',
                 width: '80vw',
                 fontSize: '22px',
+                border: 'none',
+                outline: 'none',
+                height: '100%',
+                backgroundColor: theme.palette.background.default,
+                // 縦書き
                 writingMode: 'vertical-rl',
                 msWritingMode: 'vertical-rl',
                 WebkitWritingMode: 'vertical-rl',
-                border: 'none',
-                outline: 'none',
-                backgroundColor: theme.palette.background.default
+                // すべて縦方向
+                textOrientation: 'upright'
             }}>
-            縦書きWord
+            縦書きWord。
         </div>
     )
 }
