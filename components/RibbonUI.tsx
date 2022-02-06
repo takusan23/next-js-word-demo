@@ -43,7 +43,7 @@ const RibbonTab = () => {
         <>
             <Grid container>
                 {TabItemTextList.map((tabItem) => (
-                    <Grid item>
+                    <Grid item key={tabItem.title}>
                         {/* 選択中は背景の色を変える */}
                         <Box
                             sx={{
