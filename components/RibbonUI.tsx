@@ -1,3 +1,6 @@
+import FullscreenOutlined from "@mui/icons-material/FullscreenOutlined"
+import CloseOutlined from "@mui/icons-material/CloseOutlined"
+import MinimizeOutlined from "@mui/icons-material/MinimizeOutlined"
 import { Box, Grid, Paper, Typography, useTheme } from "@mui/material"
 import RibbonContent from "./RibbonContent"
 
@@ -25,13 +28,40 @@ const TabItemTextList = new Array<TabItem>(
 /** タイトル部分 */
 const Title = () => {
     return (
-        <Typography
-            sx={{ padding: 1 }}
-            align="center"
-            color="#ffffff"
-        >
-            Woword 2021
-        </Typography>
+        <Grid container alignItems="center">
+            {/* タイトル */}
+            <Grid item xs>
+                <Typography
+                    sx={{ padding: 1 }}
+                    align="center"
+                    color="#ffffff"
+                >
+                    Woword 2021
+                </Typography>
+            </Grid>
+            {/* 終了、最大化 */}
+            <Grid item xs="auto">
+                <MinimizeOutlined sx={{
+                    marginLeft: 1,
+                    marginRight: 1,
+                    color: '#ffffff'
+                }} />
+            </Grid>
+            <Grid item xs="auto">
+                <FullscreenOutlined sx={{
+                    marginLeft: 1,
+                    marginRight: 1,
+                    color: '#ffffff'
+                }} />
+            </Grid>
+            <Grid item xs="auto">
+                <CloseOutlined sx={{
+                    marginLeft: 1,
+                    marginRight: 1,
+                    color: '#ffffff'
+                }} />
+            </Grid>
+        </Grid>
     )
 }
 
