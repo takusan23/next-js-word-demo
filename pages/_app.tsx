@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Layout from '../components/Layout'
 import useWordTheme from '../src/WordTheme'
 import { ThemeProvider } from '@mui/material'
+import React from 'react'
 
 /** エントリーポイント */
 const MyApp = ({ Component, pageProps }: AppProps) => {

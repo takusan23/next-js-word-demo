@@ -1,7 +1,7 @@
 import { colors, Grid } from '@mui/material'
 import type { NextPage } from 'next'
+import React from 'react'
 import VerticalTextField from '../components/VerticalTextField'
-import WritingLayout from '../components/WritingLayout'
 
 /** 最初に表示される画面 */
 const Home: NextPage = () => {

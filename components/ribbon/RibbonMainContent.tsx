@@ -1,25 +1,10 @@
 import { Box, colors, Grid } from "@mui/material"
 import ColorButton from "../ColorButton"
 import { DropdownButton } from "../dropdownmenu/DropdownButton"
-import DropdownMenu from "../dropdownmenu/DropdownMenu"
 import SkeletonComponent from "../SkeletonComponent"
 import Spacer from "../Spacer"
 import React from "react"
-
-/** フォントサイズ変更 */
-const FontSizeChangeMenu = () => {
-    // メニューの中身
-    const menuItemList = Array.from({ length: 5 }, (v, i) => (i + 1) * 10).map((num) => `${num}pt`)
-    // 選択中テキスト
-    const [currentSize, setSize] = React.useState("20pt")
-    return (
-        <DropdownMenu
-            menuList={menuItemList}
-            onMenuClick={(menu) => setSize(menu)}
-            value={currentSize}
-        />
-    )
-}
+import FontSizeChangeMenu from "./menu/FontSizeChangeMenu"
 
 /** 「デザイン」タブの中身 */
 const DesignContent = () => {
