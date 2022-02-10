@@ -1,21 +1,26 @@
 import ExpandMoreOutlined from "@mui/icons-material/ExpandMoreOutlined"
-import { colors, Typography } from "@mui/material"
+import { Box, colors, Typography } from "@mui/material"
+import React from "react"
 
-/** CustomDropDownMenu へ渡すデータ */
-type CustomDropDownMenuProps = {
+/** DropdownButton へ渡すデータ */
+export type DropdownButtonProps = {
     /** ドロップダウンメニューに表示するテキスト */
-    value: string
+    value: string,
+    /** ボタンを押したときに呼ばれる */
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void
 }
 
-/** ドロップダウンメニュー（見た目だけ） */
-const CustomDropDownMenu: React.FC<CustomDropDownMenuProps> = (props) => {
+/** ドロップダウンメニューで使うボタン部分。ポップアップメニューはPopupの方に書いてる */
+export const DropdownButton: React.FC<DropdownButtonProps> = (props) => {
     return (
-        <div
+        <Box
+            onClick={props.onClick}
             style={{
                 display: 'flex',
                 alignItems: 'center',
                 flexWrap: 'wrap',
                 borderRadius: '5px',
+                cursor: 'pointer',
                 background: colors.grey[300],
             }}
         >
@@ -29,8 +34,6 @@ const CustomDropDownMenu: React.FC<CustomDropDownMenuProps> = (props) => {
                 borderRadius: '5px',
                 background: colors.grey[400]
             }} />
-        </div>
+        </Box>
     )
 }
-
-export default CustomDropDownMenu

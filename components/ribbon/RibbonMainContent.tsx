@@ -1,19 +1,36 @@
 import { Box, colors, Grid } from "@mui/material"
 import ColorButton from "../ColorButton"
-import CustomDropDownMenu from "../CustomDropDownMenu"
+import { DropdownButton } from "../dropdownmenu/DropdownButton"
+import DropdownMenu from "../dropdownmenu/DropdownMenu"
 import SkeletonComponent from "../SkeletonComponent"
 import Spacer from "../Spacer"
+import React from "react"
 
-/** ドロップダウンメニュー、色選択のUIがある部分 */
-const DropDownMenuGroup = () => {
+/** フォントサイズ変更 */
+const FontSizeChangeMenu = () => {
+    // メニューの中身
+    const menuItemList = Array.from({ length: 5 }, (v, i) => (i + 1) * 10).map((num) => `${num}pt`)
+    // 選択中テキスト
+    const [currentSize, setSize] = React.useState("20pt")
+    return (
+        <DropdownMenu
+            menuList={menuItemList}
+            onMenuClick={(menu) => setSize(menu)}
+            value={currentSize}
+        />
+    )
+}
+
+/** 「デザイン」タブの中身 */
+const DesignContent = () => {
     return (
         <Box>
             <Grid container direction="row" alignItems="center" spacing={2}>
                 <Grid item>
-                    <CustomDropDownMenu value="画像挿入" />
+                    <DropdownButton value="画像挿入" />
                 </Grid>
                 <Grid item>
-                    <CustomDropDownMenu value="左揃え" />
+                    <DropdownButton value="左揃え" />
                 </Grid>
                 <Grid item>
                     <ColorButton colorCode="#000000" />
@@ -25,13 +42,13 @@ const DropDownMenuGroup = () => {
             <Spacer value={1} />
             <Grid container spacing={2}>
                 <Grid item>
-                    <CustomDropDownMenu value="22pt" />
+                    <FontSizeChangeMenu />
                 </Grid>
                 <Grid item>
-                    <CustomDropDownMenu value="游ゴシック" />
+                    <DropdownButton value="游ゴシック" />
                 </Grid>
                 <Grid item>
-                    <CustomDropDownMenu value="Regular" />
+                    <DropdownButton value="Regular" />
                 </Grid>
             </Grid>
         </Box>
@@ -66,7 +83,7 @@ const RibbonMainContent = () => {
         >
             <Grid container>
                 <Grid item>
-                    <DropDownMenuGroup />
+                    <DesignContent />
                 </Grid>
                 <Grid item>
                     <Spacer value={2} />

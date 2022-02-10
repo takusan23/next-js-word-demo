@@ -1,4 +1,5 @@
 import { useTheme } from "@mui/material"
+import styles from "../styles/VerticalTextField.module.css"
 
 /** 縦書きテキストフィールド */
 const VerticalTextField = () => {
@@ -8,6 +9,7 @@ const VerticalTextField = () => {
         <div
             suppressContentEditableWarning
             contentEditable
+            className={styles.font}
             style={{
                 padding: '10px',
                 width: '80vw',
