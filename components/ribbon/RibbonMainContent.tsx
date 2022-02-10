@@ -1,8 +1,8 @@
 import { Box, colors, Grid } from "@mui/material"
-import ColorButton from "./ColorButton"
-import CustomDropDownMenu from "./CustomDropDownMenu"
-import SkeletonComponent from "./SkeletonComponent"
-import Spacer from "./Spacer"
+import ColorButton from "../ColorButton"
+import CustomDropDownMenu from "../CustomDropDownMenu"
+import SkeletonComponent from "../SkeletonComponent"
+import Spacer from "../Spacer"
 
 /** ドロップダウンメニュー、色選択のUIがある部分 */
 const DropDownMenuGroup = () => {
@@ -54,7 +54,7 @@ const SkeletonUIGroup = () => {
 }
 
 /** リボンの中身。フォントサイズ変更とかがあるUI */
-const RibbonContent = () => {
+const RibbonMainContent = () => {
     return (
         <Box
             sx={{
@@ -79,4 +79,4 @@ const RibbonContent = () => {
     )
 }
 
-export default RibbonContent
+export default RibbonMainContent

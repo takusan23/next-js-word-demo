@@ -1,6 +1,6 @@
 import { CssBaseline, Grid } from "@mui/material"
 import Box from "@mui/material/Box"
-import RibbonUI from "./RibbonUI"
+import Ribbon from "./ribbon/Ribbon"
 
 /** Layout へ渡すデータ */
 type LayoutProps = {
@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children, ...props }) => {
             >
                 {/* リボンUIの部分 */}
                 <Grid item xs="auto">
-                    <RibbonUI />
+                    <Ribbon />
                 </Grid>
 
                 {/* 本文 */}
