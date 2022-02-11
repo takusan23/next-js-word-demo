@@ -26,6 +26,7 @@ export const DropdownPopup: React.FC<DropdownPopupProps> = (props) => {
                 anchorEl={props.anchorElement}
                 open={props.isShow && menuList.length != 0}
                 onClose={props.onMenuClose}
+                transitionDuration={0}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'left',
