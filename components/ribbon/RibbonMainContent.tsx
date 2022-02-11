@@ -5,9 +5,16 @@ import SkeletonComponent from "../SkeletonComponent"
 import Spacer from "../Spacer"
 import React from "react"
 import FontSizeChangeMenu from "./menu/FontSizeChangeMenu"
+import ArrayTool from "../../src/ArrayTool"
+import { useWordProcessorContext } from "../../src/context/WordProcessorContext"
 
 /** 「デザイン」タブの中身 */
 const DesignContent = () => {
+    // ここに書くべきなのかは知らない
+    const wordData = useWordProcessorContext()
+    /** フォントサイズをセットする */
+    const setFontSize = (size: number) => wordData?.dispatch({ type: "setFontSize", value: size })
+
     return (
         <Box>
             <Grid container direction="row" alignItems="center" spacing={2}>
@@ -27,7 +34,10 @@ const DesignContent = () => {
             <Spacer value={1} />
             <Grid container spacing={2}>
                 <Grid item>
-                    <FontSizeChangeMenu />
+                    <FontSizeChangeMenu
+                        fontSize={wordData?.state.fontSize}
+                        onSizeSelect={setFontSize}
+                    />
                 </Grid>
                 <Grid item>
                     <DropdownButton value="游ゴシック" />
@@ -45,7 +55,7 @@ const SkeletonUIGroup = () => {
     return (
         <Grid container spacing={2}>
             {
-                [0, 1, 2, 3].map((key) => (
+                ArrayTool.create(4).map((key) => (
                     <Grid item key={key}>
                         <SkeletonComponent />
                     </Grid>

@@ -1,9 +1,13 @@
 import { useTheme } from "@mui/material"
+import { useWordProcessorContext } from "../src/context/WordProcessorContext"
 import styles from "../styles/VerticalTextField.module.css"
 
 /** 縦書きテキストフィールド */
 const VerticalTextField = () => {
+    // MUIのテーマ
     const theme = useTheme()
+    // 文字のサイズとか
+    const wordData = useWordProcessorContext()
 
     return (
         <div
@@ -13,7 +17,7 @@ const VerticalTextField = () => {
             style={{
                 padding: '10px',
                 width: '80vw',
-                fontSize: '22px',
+                fontSize: `${wordData?.state.fontSize}px`,
                 border: 'none',
                 outline: 'none',
                 height: '100%',

@@ -5,6 +5,7 @@ import VerticalTextField from '../components/VerticalTextField'
 
 /** 最初に表示される画面 */
 const Home: NextPage = () => {
+
     return (
         <Grid
             container

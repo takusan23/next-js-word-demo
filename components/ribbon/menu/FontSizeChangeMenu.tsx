@@ -1,17 +1,28 @@
 import React from "react"
+import ArrayTool from "../../../src/ArrayTool"
 import DropdownMenu from "../../dropdownmenu/DropdownMenu"
 
+/** FontSizeChangeMenu へ渡すデータ */
+export type FontSizeChangeMenuProps = {
+    /** 今のフォントサイズ */
+    fontSize?: number,
+    /** 選択が変更されたら呼ばれる */
+    onSizeSelect?: (size: number) => void
+}
+
 /** フォントサイズ変更 */
-const FontSizeChangeMenu = () => {
+const FontSizeChangeMenu: React.FC<FontSizeChangeMenuProps> = (props) => {
     // メニューの中身
-    const menuItemList = Array.from({ length: 5 }, (v, i) => (i + 1) * 10).map((num) => `${num}pt`)
-    // 選択中テキスト
-    const [currentSize, setSize] = React.useState("20pt")
+    const menuItemList = ArrayTool.create(10).map(i => (i + 1) * 10).map(i => i.toString())
+
     return (
         <DropdownMenu
             menuList={menuItemList}
-            onMenuClick={(menu) => setSize(menu)}
-            value={currentSize}
+            onMenuClick={(menu) => {
+                // フォントサイズの変更
+                props.onSizeSelect?.(parseInt(menu))
+            }}
+            value={`${props.fontSize ?? 10}pt`}
         />
     )
 }
