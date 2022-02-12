@@ -23,7 +23,7 @@ const VerticalTextField = () => {
         // 今の私ではこのような形で書き換える以外の考えが出なかった...
         // dangerouslySetInnerHTMLで毎回指定すると描画がおかしくなるんだよね...
         if (wordDocument !== undefined && textFieldRef.current !== null) {
-            
+
             EditFontSize.edit(wordDocument, wordData?.state.fontSize ?? 20)
 
             textFieldRef.current.innerHTML = ReactDOMServer.renderToString(WordProcessorDocument.buildJSXDocument(wordDocument))

@@ -27,15 +27,9 @@ class EditFontSize {
                 // 初回時落ちる。何もせず返す
                 return null
             }
-            // 範囲を出す
-            const startPos = parseInt(startElement?.getAttribute('data-position')!)
-            const endPos = parseInt(endElement?.getAttribute('data-position')!)
-            // どうやらドラッグの開始位置によって startPos と endPos が逆転するらしいので治す
-            const fixedStartPos = Math.min(startPos, endPos)
-            const fixedEndPos = Math.max(startPos, endPos);
-            // フォントサイズを適用していく
+            // TODO これだと同じ行に同じ文章があった場合に対応できない
             ({ ...documentData }).wordLine[lineNumber].charList.forEach((charData) => {
-                if (fixedStartPos <= charData.position && charData.position <= fixedEndPos) {
+                if (selection?.toString().includes(charData.char)) {
                     charData.fontSize = fontSize
                 }
             })
