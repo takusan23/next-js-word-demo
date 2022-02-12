@@ -22,6 +22,10 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props) => {
                 borderRadius: '5px',
                 cursor: 'pointer',
                 background: colors.grey[300],
+                // クリックすると選択中の文字がもとに戻るので対策
+                WebkitUserSelect: 'none',
+                MozUserSelect: 'none',
+                msUserSelect: 'none'
             }}
         >
             <Typography sx={{

@@ -3,7 +3,7 @@ import WordProcessorData from "../data/WordProcessorData";
 
 /** WordProcessorData 初期値 */
 const initialData: WordProcessorData = {
-    fontSize: 30,
+    fontSize: 20,
 }
 
 /** useReducerで返ってくる値をContextに入れるための型 */

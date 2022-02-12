@@ -1,23 +1,45 @@
+import ReactDOMServer from 'react-dom/server';
 import { useTheme } from "@mui/material"
 import { useWordProcessorContext } from "../src/context/WordProcessorContext"
+import { buildJSXDocument, convertDocumentData, useWordProcessorDocument } from "../src/wordprocessor/WordProcessorDocument"
 import styles from "../styles/VerticalTextField.module.css"
+import React from 'react';
+
+const DEFAULT_FONT_SIZE = "20px"
 
 /** 縦書きテキストフィールド */
 const VerticalTextField = () => {
     // MUIのテーマ
     const theme = useTheme()
+    // ドキュメントの情報を管理する
+    const [wordDocument, setWordDocument] = useWordProcessorDocument('縦書き')
+    // テキスト編集エリアのDivのインスタンス。宣言的UIでやっちゃいけないことだとは分かっている
+    const textFieldRef = React.useRef<HTMLDivElement>(null)
+
     // 文字のサイズとか
     const wordData = useWordProcessorContext()
+    React.useEffect(() => {
+        // 今の私ではこのような形で書き換える以外の考えが出なかった...
+        // dangerouslySetInnerHTMLで毎回指定すると描画がおかしくなるんだよね...
+        if (wordDocument !== undefined && textFieldRef.current !== null) {
+            textFieldRef.current.innerHTML = ReactDOMServer.renderToString(buildJSXDocument(wordDocument))
+        }
+    }, [wordData?.state.fontSize])
 
     return (
         <div
+            id="text_field"
+            ref={textFieldRef}
             suppressContentEditableWarning
             contentEditable
             className={styles.font}
+            onInput={(e) => {
+                setWordDocument(convertDocumentData(e.target as HTMLElement))
+            }}
             style={{
                 padding: '10px',
                 width: '80vw',
-                fontSize: `${wordData?.state.fontSize}px`,
+                fontSize: DEFAULT_FONT_SIZE,
                 border: 'none',
                 outline: 'none',
                 height: '100%',
@@ -28,9 +50,9 @@ const VerticalTextField = () => {
                 WebkitWritingMode: 'vertical-rl',
                 // すべて縦方向
                 textOrientation: 'upright'
-            }}>
-            縦書きWord。
-        </div>
+            }}
+        >
+        </div >
     )
 }
 
