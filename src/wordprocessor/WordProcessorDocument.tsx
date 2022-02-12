@@ -3,8 +3,9 @@ import React from "react"
 import WordProcessorDocumentData from "../data/wordprocessor/WordProcessorDocumentData"
 // ドキュメントの各行を統括する
 import WordProcessorLineData from "../data/wordprocessor/WordProcessorLineData"
-// ドキュメント各行の文字一つ一つのデータ
+// ドキュメント各行にある文字一つ一つのデータ
 import WordProcessorCharData from "../data/wordprocessor/WordProcessorCharData"
+
 
 /**
  * 初期値生成器
@@ -12,86 +13,95 @@ import WordProcessorCharData from "../data/wordprocessor/WordProcessorCharData"
  * @param text 初期値
  */
 const createInitialData = (text: string) => {
-    return ({
-        wordLine: new Array<WordProcessorLineData>(
-            ({
-                charList: text.split('').map(c => ({
-                    char: c
-                } as WordProcessorCharData))
-            } as WordProcessorLineData)
-        )
-    } as WordProcessorDocumentData)
+    const charList = text.split('').map((char, charIndex) => {
+        const charData: WordProcessorCharData = {
+            char: char,
+            position: charIndex
+        }
+        return charData
+    })
+    const lineData: WordProcessorLineData = {
+        charList: charList,
+        lineNumber: 0
+    }
+    const documentData: WordProcessorDocumentData = {
+        wordLine: new Array(lineData)
+    }
+    return documentData
 }
 
 /** 作業中のドキュメントを管理するやつを作る */
 export const useWordProcessorDocument = (initialText: string = '') => React.useState<WordProcessorDocumentData>(createInitialData(initialText))
 
-/**
- * 編集中HTML を WordProcessorDocumentData 形式に変換する
- * 
- * @param document contentEditable を付けた要素
- */
-export const convertDocumentData = (document: HTMLElement) => {
-    const lineData = Array.from(document.childNodes)
-        // 各行の文字を各文字の配列に
-        .map(childElement => childElement.textContent?.split(''))
-        // 各行の文字列をLineDataへ、各文字の配列に
-        .map(charList => ({
+class WordProcessorDocument {
 
-            charList: charList?.map(c => ({
-                char: c,
-            } as WordProcessorCharData))
+    /**
+     * 編集中HTML を WordProcessorDocumentData 形式に変換する
+     * 
+     * @param document contentEditable を付けた要素
+     */
+    static convertDocumentData = (document: HTMLElement) => {
+        const lineData = Array.from(document.childNodes)
+            // 各行の文字を各文字の配列に
+            .map(childElement => childElement.textContent?.split(''))
+            // 各行の文字列をLineDataへ、各文字の配列に
+            .map((charList, lineIndex) => ({
+                lineNumber: lineIndex,
+                charList: charList?.map((c, charIndex) => ({
+                    char: c,
+                    position: charIndex
+                } as WordProcessorCharData))
 
-        } as WordProcessorLineData))
+            } as WordProcessorLineData))
 
-    const documentData: WordProcessorDocumentData = {
-        wordLine: lineData
+        const documentData: WordProcessorDocumentData = {
+            wordLine: lineData
+        }
+        return documentData
     }
-    console.log(documentData)
-    return documentData
+
+    /** 
+     * WordProcessorDocumentDataをJSX(TSX)に変換する
+     *
+     * @param data WordProcessorDocumentData
+     */
+    static buildJSXDocument = (data: WordProcessorDocumentData) => {
+        // 他でかぶらないように数値を作る
+        let uniqueIndex = 0
+        const createJSX = (
+            <>
+                {
+                    data.wordLine.map(lineData => (
+                        // 各行作成
+                        <div
+                            id={lineData.lineNumber.toString()}
+                            key={uniqueIndex++}
+                        >
+                            {
+                                // 行の中身の文字を描画
+                                lineData.charList.map(charData => (
+                                    // window.getSelection が要素を返すのでその際の情報を入れておく
+                                    // data- から始まる属性でカスタム属性が作れる
+                                    <span
+                                        data-linenumber={lineData.lineNumber}
+                                        data-position={charData.position}
+                                        key={uniqueIndex++}
+                                        style={{
+                                            fontSize: `${charData.fontSize ?? 20}px`,
+                                            color: charData.fontColor
+                                        }}
+                                    >
+                                        {charData.char}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    ))
+                }
+            </>
+        )
+        return createJSX
+    }
 }
 
-/** 
- * WordProcessorDocumentDataをJSX(TSX)に変換する
- *
- * @param data WordProcessorDocumentData
- */
-export const buildJSXDocument = (data: WordProcessorDocumentData) => {
-    // const html = data.wordLine.map(lineData => {
-    //     const div = document.createElement('div')
-    //     lineData.charList.forEach((charData) => {
-    //         const span = document.createElement('span')
-    //         span.style.color = charData.fontColor ?? 'black'
-    //         span.style.fontSize = `${charData.fontSize ?? 20}px`
-    //         span.textContent = charData.char
-    //         div.appendChild(span)
-    //     })
-    //     return div.innerHTML
-    // }).join('')
-    const createJSX = (
-        <>
-            {
-                data.wordLine.map(lineData => (
-                    // 各行作成
-                    <div key={Math.random()}>
-                        {
-                            // 行の中身の文字を描画
-                            lineData.charList.map(charData => (
-                                <span
-                                    key={Math.random()}
-                                    style={{
-                                        fontSize: `${charData.fontSize ?? 20}px`,
-                                        color: charData.fontColor
-                                    }}
-                                >
-                                    {charData.char}
-                                </span>
-                            ))
-                        }
-                    </div>
-                ))
-            }
-        </>
-    )
-    return createJSX
-}
+export default WordProcessorDocument

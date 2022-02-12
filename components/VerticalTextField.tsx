@@ -1,9 +1,10 @@
 import ReactDOMServer from 'react-dom/server';
 import { useTheme } from "@mui/material"
 import { useWordProcessorContext } from "../src/context/WordProcessorContext"
-import { buildJSXDocument, convertDocumentData, useWordProcessorDocument } from "../src/wordprocessor/WordProcessorDocument"
+import WordProcessorDocument, { useWordProcessorDocument } from "../src/wordprocessor/WordProcessorDocument"
 import styles from "../styles/VerticalTextField.module.css"
 import React from 'react';
+import EditFontSize from '../src/wordprocessor/EditFontSize';
 
 const DEFAULT_FONT_SIZE = "20px"
 
@@ -22,7 +23,10 @@ const VerticalTextField = () => {
         // 今の私ではこのような形で書き換える以外の考えが出なかった...
         // dangerouslySetInnerHTMLで毎回指定すると描画がおかしくなるんだよね...
         if (wordDocument !== undefined && textFieldRef.current !== null) {
-            textFieldRef.current.innerHTML = ReactDOMServer.renderToString(buildJSXDocument(wordDocument))
+            
+            EditFontSize.edit(wordDocument, wordData?.state.fontSize ?? 20)
+
+            textFieldRef.current.innerHTML = ReactDOMServer.renderToString(WordProcessorDocument.buildJSXDocument(wordDocument))
         }
     }, [wordData?.state.fontSize])
 
@@ -34,7 +38,10 @@ const VerticalTextField = () => {
             contentEditable
             className={styles.font}
             onInput={(e) => {
-                setWordDocument(convertDocumentData(e.target as HTMLElement))
+                setWordDocument(WordProcessorDocument.convertDocumentData(e.target as HTMLElement))
+            }}
+            onPaste={(e) => {
+                setWordDocument(WordProcessorDocument.convertDocumentData(e.target as HTMLElement))
             }}
             style={{
                 padding: '10px',
