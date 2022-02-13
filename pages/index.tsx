@@ -16,34 +16,19 @@ const Home: NextPage = () => {
     // テキストフィールドへのインスタンス（宣言的UIでやるべきではない）
     const textFieldRef = React.useRef<HTMLDivElement>(null)
 
-    /**
-     * DocumentDataを実際のテキストフィールドへ入れる
-     * 
-     * テキストフィールドを離れたら置き換える。が、中身の更新が必要ない場合はむやみに呼ばない
-     * 
-     */
+    /** DocumentDataを実際のテキストフィールドへ入れる */
     const applyDocument = () => {
-        if (textFieldRef.current !== null) {
-            // 更新が必要ない場合は無視
-            if (textFieldRef.current !== null && WordProcessorDocument.isNotEqual(textFieldRef.current, wordDocument)) {
-                console.log('更新')
-                textFieldRef.current!.innerHTML = WordProcessorDocument.convertJSXToHTML(WordProcessorDocument.buildJSXDocument(wordDocument))
-            } else {
-                console.log('更新スキップ')
-            }
-        }
+        textFieldRef.current!.innerHTML = WordProcessorDocument.convertJSXToHTML(WordProcessorDocument.buildJSXDocument(wordDocument))
     }
 
     React.useEffect(() => {
         // 今の私ではこのような形で書き換える以外の考えが出なかった...
         // dangerouslySetInnerHTMLで毎回指定すると描画がおかしくなるんだよね...
-        if (wordDocument !== undefined && textFieldRef.current !== null) {
+        if (wordDocument !== undefined) {
             EditFontSize.edit(wordDocument, wordData?.state.fontSize ?? 20)
             applyDocument()
         }
     }, [wordData?.state.fontSize])
-
-    const [html, setHtml] = React.useState('Hello World')
 
     return (
         <Grid
@@ -58,13 +43,10 @@ const Home: NextPage = () => {
         >
             <Grid item xs>
                 <VerticalTextField
-                    onBlur={applyDocument}
                     textFieldRef={textFieldRef}
-                    setWordDocument={setWordDocument}
+                    setWordDocument={(data) => { setWordDocument(data) }}
                     wordDocument={wordDocument}
                 />
-            </Grid>
-            <Grid item>
             </Grid>
         </Grid>
     )

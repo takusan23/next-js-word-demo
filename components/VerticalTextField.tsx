@@ -15,7 +15,7 @@ type VerticalTextFieldProps = {
     /** テキスト編集エリアのDivのインスタンス。宣言的UIでやっちゃいけないことだとは分かっている */
     textFieldRef: React.Ref<HTMLDivElement>,
     /** テキストフィールドを離れたら呼ばれる */
-    onBlur: () => void,
+    onBlur?: () => void,
 }
 
 /** 縦書きテキストフィールド */
