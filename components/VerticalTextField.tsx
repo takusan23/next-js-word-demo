@@ -1,46 +1,51 @@
-import ReactDOMServer from 'react-dom/server';
 import { useTheme } from "@mui/material"
-import { useWordProcessorContext } from "../src/context/WordProcessorContext"
-import WordProcessorDocument, { useWordProcessorDocument } from "../src/wordprocessor/WordProcessorDocument"
 import styles from "../styles/VerticalTextField.module.css"
-import React, { useEffect } from 'react';
-import EditFontSize from '../src/wordprocessor/EditFontSize';
+import React from 'react'
+import WordProcessorDocumentData from "../src/data/wordprocessor/WordProcessorDocumentData"
+import WordProcessorDocument from "../src/wordprocessor/WordProcessorDocument"
 
 const DEFAULT_FONT_SIZE = "20px"
 
+/** VerticalTextField へ渡すデータ */
+type VerticalTextFieldProps = {
+    /** ドキュメント情報 */
+    wordDocument: WordProcessorDocumentData,
+    /** ドキュメント情報を更新する関数 */
+    setWordDocument: (wordDocument: WordProcessorDocumentData) => void,
+    /** テキスト編集エリアのDivのインスタンス。宣言的UIでやっちゃいけないことだとは分かっている */
+    textFieldRef: React.Ref<HTMLDivElement>,
+    /** テキストフィールドを離れたら呼ばれる */
+    onBlur: () => void,
+}
+
 /** 縦書きテキストフィールド */
-const VerticalTextField = () => {
+const VerticalTextField: React.FC<VerticalTextFieldProps> = (props) => {
     // MUIのテーマ
     const theme = useTheme()
-    // ドキュメントの情報を管理する
-    const [wordDocument, setWordDocument] = useWordProcessorDocument('縦書き。美しい日本語')
-    // テキスト編集エリアのDivのインスタンス。宣言的UIでやっちゃいけないことだとは分かっている
-    const textFieldRef = React.useRef<HTMLDivElement>(null)
 
-    // 文字のサイズとか
-    const wordData = useWordProcessorContext()
-    React.useEffect(() => {
-        // 今の私ではこのような形で書き換える以外の考えが出なかった...
-        // dangerouslySetInnerHTMLで毎回指定すると描画がおかしくなるんだよね...
-        if (wordDocument !== undefined && textFieldRef.current !== null) {
-            EditFontSize.edit(wordDocument, wordData?.state.fontSize ?? 20)
-            textFieldRef.current.innerHTML = ReactDOMServer.renderToString(WordProcessorDocument.buildJSXDocument(wordDocument))
-        }
-    }, [wordData?.state.fontSize])
+    /**
+     * 入力した内容を管理側に反映させる
+     * 
+     * @param 入力してる要素
+     */
+    const updateDocument = (element: HTMLElement) => {
+        props.setWordDocument(WordProcessorDocument.convertDocumentData(element))
+    }
 
     return (
         <div
             id="text_field"
-            ref={textFieldRef}
+            ref={props.textFieldRef}
             suppressContentEditableWarning
             contentEditable
             className={styles.font}
             onInput={(e) => {
-                setWordDocument(WordProcessorDocument.convertDocumentData(e.target as HTMLElement))
+                updateDocument(e.target as HTMLElement)
             }}
             onPaste={(e) => {
-                setWordDocument(WordProcessorDocument.convertDocumentData(e.target as HTMLElement))
+                updateDocument(e.target as HTMLElement)
             }}
+            onBlur={props.onBlur}
             style={{
                 padding: '10px',
                 width: '80vw',
@@ -56,8 +61,7 @@ const VerticalTextField = () => {
                 // すべて縦方向
                 textOrientation: 'upright'
             }}
-        >
-        </div >
+        />
     )
 }
 

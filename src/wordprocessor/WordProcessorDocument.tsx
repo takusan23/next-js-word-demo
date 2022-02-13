@@ -1,4 +1,5 @@
 import React from "react"
+import ReactDomServer from 'react-dom/server'
 // ドキュメントを統括する
 import WordProcessorDocumentData from "../data/wordprocessor/WordProcessorDocumentData"
 // ドキュメントの各行を統括する
@@ -101,6 +102,28 @@ class WordProcessorDocument {
             </>
         )
         return createJSX
+    }
+
+    /**
+     * JSXをHTMLにする
+     * 
+     * @param jsx JSX
+     * @returns HTML
+     */
+    static convertJSXToHTML(jsx: JSX.Element) {
+        return ReactDomServer.renderToString(jsx)
+    }
+
+    /**
+     * 今入力してる中身と引数に指定したドキュメントのデータが違う場合はtrueを返す
+     * 
+     * @param document contentEditable の要素
+     * @param wordDocument 比較するドキュメントデータ
+     * @return 違う場合はtrue
+     */
+    static isNotEqual(document: HTMLElement, wordDocument: WordProcessorDocumentData) {
+        const documentDataHTML = this.convertJSXToHTML(this.buildJSXDocument(wordDocument))
+        return document.innerHTML !== documentDataHTML
     }
 }
 

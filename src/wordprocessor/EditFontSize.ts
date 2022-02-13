@@ -1,4 +1,5 @@
 import WordProcessorDocumentData from "../data/wordprocessor/WordProcessorDocumentData"
+import SelectedText from "./SelectedText"
 
 /**
  * WordProcessorDocumentData を加工するシリーズ第一弾
@@ -15,24 +16,12 @@ class EditFontSize {
      * @return これを更新して
      */
     static edit(documentData: WordProcessorDocumentData, fontSize: number) {
-        const selection = window.getSelection()
-        // とりあえず位置を出す
-        const startElement = selection?.anchorNode?.parentElement
-        const endElement = selection?.focusNode?.parentElement
-
-        if (startElement !== undefined && endElement !== undefined) {
-            // 各Spanにカスタム属性として位置を入れておいたので参照する
-            const lineNumber = parseInt(startElement?.getAttribute('data-linenumber') ?? '-1')
-            if (lineNumber == -1) {
-                // 初回時落ちる
-                return
-            }
-            // なんかうまく動かないので文字列を探すようにした
-            // TODO これだと同じ行に同じ文章があった場合に対応できない
-            const startPos = startElement?.parentElement?.textContent?.indexOf(selection!.toString())!
-            const endPos = startPos + (selection!.toString().length - 1) // 既にstartPosに含まれているので-1
-            documentData.wordLine[lineNumber].charList.forEach((charData) => {
-                if (startPos <= charData.position && charData.position <= endPos) {
+        // 位置を出す
+        const selectedPos = SelectedText.getPosition()
+        if (selectedPos !== null) {
+            // 指定位置にフォントサイズをあてる
+            documentData.wordLine[selectedPos.lineNumber].charList.forEach((charData) => {
+                if (selectedPos.startPos <= charData.position && charData.position <= selectedPos.endPos) {
                     charData.fontSize = fontSize
                 }
             })
