@@ -24,12 +24,15 @@ class EditFontSize {
             // 各Spanにカスタム属性として位置を入れておいたので参照する
             const lineNumber = parseInt(startElement?.getAttribute('data-linenumber') ?? '-1')
             if (lineNumber == -1) {
-                // 初回時落ちる。何もせず返す
-                return null
+                // 初回時落ちる
+                return
             }
+            // なんかうまく動かないので文字列を探すようにした
             // TODO これだと同じ行に同じ文章があった場合に対応できない
-            ({ ...documentData }).wordLine[lineNumber].charList.forEach((charData) => {
-                if (selection?.toString().includes(charData.char)) {
+            const startPos = startElement?.parentElement?.textContent?.indexOf(selection!.toString())!
+            const endPos = startPos + (selection!.toString().length - 1) // 既にstartPosに含まれているので-1
+            documentData.wordLine[lineNumber].charList.forEach((charData) => {
+                if (startPos <= charData.position && charData.position <= endPos) {
                     charData.fontSize = fontSize
                 }
             })

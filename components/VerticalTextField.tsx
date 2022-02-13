@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material"
 import { useWordProcessorContext } from "../src/context/WordProcessorContext"
 import WordProcessorDocument, { useWordProcessorDocument } from "../src/wordprocessor/WordProcessorDocument"
 import styles from "../styles/VerticalTextField.module.css"
-import React from 'react';
+import React, { useEffect } from 'react';
 import EditFontSize from '../src/wordprocessor/EditFontSize';
 
 const DEFAULT_FONT_SIZE = "20px"
@@ -13,7 +13,7 @@ const VerticalTextField = () => {
     // MUIのテーマ
     const theme = useTheme()
     // ドキュメントの情報を管理する
-    const [wordDocument, setWordDocument] = useWordProcessorDocument('縦書き')
+    const [wordDocument, setWordDocument] = useWordProcessorDocument('縦書き。美しい日本語')
     // テキスト編集エリアのDivのインスタンス。宣言的UIでやっちゃいけないことだとは分かっている
     const textFieldRef = React.useRef<HTMLDivElement>(null)
 
@@ -23,9 +23,7 @@ const VerticalTextField = () => {
         // 今の私ではこのような形で書き換える以外の考えが出なかった...
         // dangerouslySetInnerHTMLで毎回指定すると描画がおかしくなるんだよね...
         if (wordDocument !== undefined && textFieldRef.current !== null) {
-
             EditFontSize.edit(wordDocument, wordData?.state.fontSize ?? 20)
-
             textFieldRef.current.innerHTML = ReactDOMServer.renderToString(WordProcessorDocument.buildJSXDocument(wordDocument))
         }
     }, [wordData?.state.fontSize])
